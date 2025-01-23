@@ -14,3 +14,20 @@ A Blog Management System built using Django. This web application allows users t
 - Frontend: HTML, CSS, Bootstrap
 - Database: SQLite/PostgreSQL
 - Version Control: Git, GitHub
+
+# Installation
+1. Clone the repository:
+git clone https://github.com/yourusername/blog-management-project.git
+cd blog-management-project
+
+2. Set up the database:
+python manage.py migrate
+
+3. Create a superuser to access the admin panel:
+python manage.py createsuperuser
+
+4. Run the development server:
+python manage.py runserver
+
+5. Open your browser and visit http://127.0.0.1:8000 to see the app in action!
+
