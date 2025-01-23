@@ -1,0 +1,61 @@
+{% extends 'blog/base.html' %} 
+{% block content %}
+{% load static %}
+<div class="container custom-container">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light w-100">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto ">
+                <li><a href="/home"> <img src="{% static 'image/blog1.png' %}" width="200" height="70" alt=""></a></li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0">
+                <div class="dropdown">
+                    <button class="btn btn-outline-primary dropdown-toggle" type="button" id="dropdownMenuButton"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Profile
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="/newpost">New Post</a>
+                        <a class="dropdown-item" href="/mypost">My Posts</a>
+                        <a class="dropdown-item" href="/signout">Sign Out</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </nav>
+
+    <form method="POST" action="">
+        {% csrf_token %}
+    
+        <div class="container custom-container" style="max-width: 1250px;">
+            <br><br>
+            <h2 class="fw-bolder">Delete Blog Post</h2>
+            <p class="fw-bolder">Are you sure you want to delete "{{ post.title }}"?</p>
+            <hr><br>
+            <article class="media content-section">
+
+                <div class="media-body" style="border: 1px solid black; padding: 23px; margin-bottom: 10px;">
+                    <div class="article-metadata">
+                        <h5 class="text-uppercase" style="text-align:left;float:left; color: #000000;"> Blog By {{ post.author }}</h5>
+                        <h5 style="text-align:right;float:right;">{{ post.date_posted|date:"F d, Y" }}</h5>
+                        <hr style="clear:both;" />
+                    </div>
+    
+                    <h4 style="text-align:left;float:left; color: #000000;">{{ post.title }}</h4>
+                    <h4 style="text-align:right;float:right;">{{ post.category }}</h4>
+                    <hr style="clear:both;" />
+                    <p class="article-content">{{ post.content }}</p> 
+                </div>
+            </article>
+
+            <button type="submit" class="btn btn-danger">Delete</button>
+            <a href="/mypost" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+
+{% endblock %}
