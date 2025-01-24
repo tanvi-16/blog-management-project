@@ -1,4 +1,3 @@
-# blog-management-project
 # Blog Management Project
 
 A Blog Management System built using Django. This web application allows users to create, manage, and interact with blog posts, offering features like user authentication, post creation and post deletion for content moderation.
