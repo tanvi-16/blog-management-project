@@ -11,7 +11,7 @@ A Blog Management System built using Django. This web application allows users t
 # Technologies Used
 - Backend: Django, Python
 - Frontend: HTML, CSS, Bootstrap
-- Database: SQLite/PostgreSQL
+- Database: SQLite
 - Version Control: Git, GitHub
 
 # Installation
