@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.db import models
 from django.contrib.auth.models import User
 from blog import models
-from .models import Post
+from .models import Post, Userimage
 from .models import SoftDelete
 from django.utils import timezone
 from django import forms
@@ -12,7 +12,11 @@ from datetime import datetime
 from django.shortcuts import get_object_or_404  
 from django.shortcuts import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
+from django.core.files.base import ContentFile
+import base64
+from django.http import JsonResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
+
 
 
 class Signup(View):
@@ -24,6 +28,7 @@ class Signup(View):
         email = request.POST.get('uemail')
         password = request.POST.get('upassword')
         #confirm_password = request.POST.get('uconfirmpassword')
+    
         newUser = User.objects.create_user(username=name, email=email, password=password)
         newUser.save()
         return redirect('/')
@@ -57,7 +62,7 @@ class Home(View):
         }
         return render(request, 'blog/home.html', context)
 
-
+ 
 class NewPost(LoginRequiredMixin, View):
     def get(self, request):
         return render(request, 'blog/newpost.html')
@@ -69,6 +74,7 @@ class NewPost(LoginRequiredMixin, View):
         npost = models.Post(title=title, content=content, category=category, author=request.user)
         npost.save()
         return redirect('/home')
+
 
 
 class MyPost(LoginRequiredMixin, View):
@@ -90,7 +96,6 @@ class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = ['title', 'category', 'content']  
-
 
 @login_required
 def update(request, post_id):

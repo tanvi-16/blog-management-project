@@ -40,5 +40,10 @@ class Post(SoftDelete):
 
     def __str__(self):
         return self.title
+    
+class Userimage(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    face_image = models.ImageField(upload_to="user_faces/")
 
-
+    def __str__(self):
+        return self.user

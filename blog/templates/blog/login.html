@@ -4,8 +4,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-6 offset-md-3">
-            <!-- <h2 class="text-center text-dark mt-5">BlogBridges</h2> -->
-            <br><br><br><br>
+            <!--<h2 class="text-center text-dark mt-5">Blog</h2>-->
             <div class="card my-5" style="background-color:#F0F8FF;">
 
                 <form class="card-body cardbody-color p-lg-5"  method="post">
@@ -28,17 +27,73 @@
                     <div class="mb-3">
                         <input type="password" class="form-control" id="password" name="upassword" placeholder="Password">
                     </div>
-                    <div class="text-center"><button type="submit" class="btn btn-color px-5 mb-5 w-100" value="login">Login</button>
+                    <div class="mb-3">
+                        <video class="form-control" id="video" width="100%" height="auto" autoplay></video>
+                        <canvas class="form-control" id="canvas" width="300" height="200"></canvas>
+                    </div>
+                    <div class="text-center">
+                        <button type="button" class="btn btn-color px-5 mb-5 w-100" id="capture-button">Capture Face</button>
+                        <button type="submit" class="btn btn-color px-5 mb-5 w-100" value="login">Login</button>
                     </div>
                     <div id="emailHelp" class="form-text text-center mb-5 text-dark">Not
                         Registered? <a href="/signup" class="text-dark fw-bold"> Create an
                             Account</a>
                     </div>
                 </form>
+                <!--<div class="card my-5" id="message"></div>-->
             </div>
-
         </div>
     </div>
 </div>
 
+<script>
+    const video = document.getElementById('video')
+    const canvas = document.getElementById('canvas') 
+    const captureButton = document.getElementById('capture-button')
+    const loginForm = document.getElementById('login-form')
+    const messageDiv = document.getElementById('message')
+    console.log(canvas)
+
+    let capturedImage = null
+
+    navigator.mediaDevices.getUserMedia({video :true})
+    .then((stream)=>{
+        video.srcObject = stream
+    }).catch((err)=>{
+        console.log("Error accessing your camera")
+        messageDiv.innerHTML = "Camera not accessible."
+    })
+
+    captureButton.addEventListener('click', ()=>{
+        if(!video.srcObject){
+            messageDiv.innerHTML = "Please allow access to your Camera."
+            return
+        }
+        console.log(canvas)
+        const context = canvas.getContext("2d")
+        context.drawImage(video, 0, 0, canvas.width, canvas.height)
+        capturedImage = canvas.toDataURL('image/jpeg')
+        messageDiv.innerHTML = "Face Captured Successfully"
+    })
+
+    loginForm.onsubmit = async(e) =>{
+        e.preventDefault()
+
+        if(!capturedImage){
+            messageDiv.innerHTML = "Please capture a face first"
+            return
+        }
+        const formData = new FormData(loginForm)
+        formData.append('face_image', capturedImage)
+        const response = await fetch('/login/',{
+            method : 'POST',
+            body : formData
+        });
+
+        const data = await response.data();
+        messageDiv.innerHTML = data.mediaDevices || 'Login Failed';
+
+    }
+
+</script>
 {% endblock %}
